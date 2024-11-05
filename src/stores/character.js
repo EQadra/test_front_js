@@ -13,33 +13,49 @@ export const useCharacterStore = defineStore('character', {
   actions: {
     // Obtener la lista de personajes
     async fetchCharacters() {
-      this.loading = true
-      this.error = null // Limpiar errores anteriores
+      this.loading = true;
+      this.error = null; // Limpiar errores anteriores
       try {
-        const response = await axios.get('https://rickandmortyapi.com/api/character')
-        this.characters = response.data.results
+        const response = await axios.get('https://rickandmortyapi.com/api/character');
+        // Transform the response to an array
+        this.characters = Object.values(response.data.results);
       } catch (error) {
-        this.error = 'Error al cargar personajes'
-        console.error(error)
+        this.error = 'Error al cargar personajes';
+        console.error(error);
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
 
-    // Obtener el detalle de un personaje por ID
     async fetchCharacterById(id) {
-      this.loading = true
-      this.error = null // Limpiar errores anteriores
+      this.loading = true;
+      this.error = null; // Limpiar errores anteriores
       try {
-        const response = await axios.get(`https://rickandmortyapi.com/api/character/${id}`)
-        this.character = response.data
+        const response = await axios.get(`https://rickandmortyapi.com/api/character/${id}`);
+        console.log('Character Data:', response.data); // Log the character data
+        this.character = response.data;
       } catch (error) {
-        this.error = 'Error al cargar el detalle del personaje'
-        console.error(error)
+        this.error = 'Error al cargar el detalle del personaje';
+        console.error(error);
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
+    
+    // Obtener el detalle de un personaje por ID
+    // async fetchCharacterById(id) {
+    //   this.loading = true
+    //   this.error = null // Limpiar errores anteriores
+    //   try {
+    //     const response = await axios.get(`https://rickandmortyapi.com/api/character/${id}`)
+    //     this.character = response.data
+    //   } catch (error) {
+    //     this.error = 'Error al cargar el detalle del personaje'
+    //     console.error(error)
+    //   } finally {
+    //     this.loading = false
+    //   }
+    // },
 
     // Obtener los capítulos en los que aparece un personaje
     async fetchCharacterChapters(id) {
